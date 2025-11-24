@@ -67,18 +67,12 @@ def test_write_data_file(monkeypatch, tmp_path):
     Test module.write_data_file() writes something
     """
     (tmp_path / "multiqc_tmp").mkdir()
-    monkeypatch.setattr(
-        tempfile, "mkdtemp", lambda: tmp_path / "multiqc_tmp"
-    )
+    monkeypatch.setattr(tempfile, "mkdtemp", lambda: tmp_path / "multiqc_tmp")
 
     module = BaseMultiqcModule()
-    module.write_data_file(
-        {"Sample": {"key": "value"}}, "multiqc_test_module"
-    )
+    module.write_data_file({"Sample": {"key": "value"}}, "multiqc_test_module")
 
-    expected_path = (
-        tmp_path / "multiqc_tmp" / "multiqc_data" / "multiqc_test_module.txt"
-    )
+    expected_path = tmp_path / "multiqc_tmp" / "multiqc_data" / "multiqc_test_module.txt"
     assert expected_path.exists()
     expected_content = """Sample\tkey\nSample\tvalue""".strip()
     assert expected_path.open().read().strip() == expected_content

@@ -123,9 +123,7 @@ class MultiqcModule(BaseMultiqcModule):
                 statuses[sample_name] = "pass"
 
         # Add streamline count to general statistics
-        general_stats_data = {
-            s: {"streamline_count": val} for s, val in sc_data.items()
-        }
+        general_stats_data = {s: {"streamline_count": val} for s, val in sc_data.items()}
 
         self.general_stats_addcols(
             general_stats_data,
