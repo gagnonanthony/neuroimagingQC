@@ -29,21 +29,21 @@ If your module is for something very niche, which no-one else can use, then it's
 
 ### Overview of files
 
-* `pyproject.toml`
-    * Where the plugin hooks are defined. This is where you tell MultiQC where to find your code.
-    * This file also defines how your plugin should be installed, including required python packages.
-* `example_plugin/`
-    * Installable Python packages are typically put into a directory with the same name.
-* `example_plugin/__init__.py`
-    * Python packages need an `__init__.py` file in every directory. Here, these are mostly empty (except the one in the `my_example` folder, which contains a shortcut to make the `import` statement shorter).
-    * If you prefer, you can put all code in these files and just reference the directory name only.
-* `example_plugin/cli.py`
-    * Additional command line parameters to add to MultiQC
-* `example_plugin/custom_code.py`
-    * File to hold custom functions that can tie into the main MultiQC execution flow.
-    * In this file, we define some new config defaults, including the search patterns used by the example module
-* `example_plugin/modules/my_example/`
-    * This folder contains a minimal MultiQC module which will execute along with all other MultiQC modules (as defined by the `setup.py` hook).
+- `pyproject.toml`
+  - Where the plugin hooks are defined. This is where you tell MultiQC where to find your code.
+  - This file also defines how your plugin should be installed, including required python packages.
+- `example_plugin/`
+  - Installable Python packages are typically put into a directory with the same name.
+- `example_plugin/__init__.py`
+  - Python packages need an `__init__.py` file in every directory. Here, these are mostly empty (except the one in the `my_example` folder, which contains a shortcut to make the `import` statement shorter).
+  - If you prefer, you can put all code in these files and just reference the directory name only.
+- `example_plugin/cli.py`
+  - Additional command line parameters to add to MultiQC
+- `example_plugin/custom_code.py`
+  - File to hold custom functions that can tie into the main MultiQC execution flow.
+  - In this file, we define some new config defaults, including the search patterns used by the example module
+- `example_plugin/modules/my_example/`
+  - This folder contains a minimal MultiQC module which will execute along with all other MultiQC modules (as defined by the `setup.py` hook).
 
 ### Usage
 
