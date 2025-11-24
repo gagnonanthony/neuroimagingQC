@@ -1,63 +1,103 @@
-# Example MultiQC Plugin
+![Static Badge](https://img.shields.io/badge/python-%3E3.8-blue?logo=python)
+[![Code Lint](https://github.com/gagnonanthony/neuroimagingQC/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/gagnonanthony/neuroimagingQC/actions/workflows/lint.yml)
+[![Plugin tests](https://github.com/gagnonanthony/neuroimagingQC/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/gagnonanthony/neuroimagingQC/actions/workflows/test.yml)
 
-This example repository contains example code to help you get started with writing your own MultiQC plugin.
+# MultiQC-neuroimaging
 
-It should be used in addition to the main MultiQC documentation:
-[https://docs.seqera.io/multiqc/](https://docs.seqera.io/multiqc/development/plugins)
+A MultiQC plugin for comprehensive quality control of neuroimaging pipelines. This plugin aggregates QC metrics from various neuroimaging analysis outputs into interactive HTML reports.
 
-If you have any questions, please get in touch on the community forum:
-[https://community.seqera.io/multiqc](https://community.seqera.io/multiqc)
+## Features
 
-<p align="center">
-  <a href="https://seqera.io/multiqc/">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" width="350" srcset="https://github.com/seqeralabs/logos/blob/master/multiqc/multiqc_logo_color_darkbg.png?raw=true">
-        <img alt="Nextflow Logo" width="350" src="https://github.com/seqeralabs/logos/blob/master/multiqc/multiqc_logo_color.png?raw=true">
-    </picture>
-  </a>
-</p>
+The plugin includes modules for:
 
----
+- **Cortical Regions**: QC metrics for cortical volume segmentation with IQR-based outlier detection
+- **Subcortical Regions**: QC metrics for subcortical volume segmentation with IQR-based outlier detection
+- **Tractometry**: Bundle extraction quality assessment with FA, volume, and streamline count metrics
+- **Coverage**: Dice coefficient validation for tractography WM coverage
+- **Framewise Displacement**: Head motion assessment between DWI volumes
+- **Streamline Count**: Tractography quality control using IQR-based outlier detection
 
-### When to write a plugin
+All modules feature configurable thresholds, status indicators (pass/warn/fail), and interactive visualizations.
 
-This example plugin contains both custom code and a MultiQC module for parsing content into reports.
+## Installation
 
-MultiQC modules can either be written as part of the core MultiQC program, or in a stand-alone plugin. If your module is for a publicly available tool, **please add it to the main program** and contribute your code via a pull request (see the [contributing instructions](https://github.com/MultiQC/MultiQC/blob/master/.github/CONTRIBUTING.md)).
-
-If your module is for something very niche, which no-one else can use, then it's best to write it as part of a custom plugin. The process is almost identical, though it keeps the code bases separate.
-
-### Overview of files
-
-- `pyproject.toml`
-  - Where the plugin hooks are defined. This is where you tell MultiQC where to find your code.
-  - This file also defines how your plugin should be installed, including required python packages.
-- `example_plugin/`
-  - Installable Python packages are typically put into a directory with the same name.
-- `example_plugin/__init__.py`
-  - Python packages need an `__init__.py` file in every directory. Here, these are mostly empty (except the one in the `my_example` folder, which contains a shortcut to make the `import` statement shorter).
-  - If you prefer, you can put all code in these files and just reference the directory name only.
-- `example_plugin/cli.py`
-  - Additional command line parameters to add to MultiQC
-- `example_plugin/custom_code.py`
-  - File to hold custom functions that can tie into the main MultiQC execution flow.
-  - In this file, we define some new config defaults, including the search patterns used by the example module
-- `example_plugin/modules/my_example/`
-  - This folder contains a minimal MultiQC module which will execute along with all other MultiQC modules (as defined by the `setup.py` hook).
-
-### Usage
-
-To use this code, you need to install MultiQC and then your code. For example:
-
-```
-pip install MultiQC
-pip install .
+```bash
+pip install multiqc
+pip install git+https://github.com/gagnonanthony/neuroimagingQC.git
 ```
 
-Use `pip install -e .` if you're actively working on the code - then you don't need to rerun the installation every time you make an edit _(though you still do if you change anything in `pyproject.toml`)_.
+For development:
 
-### Disabling the plugin
+```bash
+pip install multiqc
+git clone https://github.com/gagnonanthony/neuroimagingQC.git
+cd neuroimagingQC
+pip install -e ".[dev]"
+pre-commit install
+```
 
-In this example plugin, I have defined a single additional command line flag - `--disable-example-plugin`. When specified, it sets a new MultiQC config value to `True`. This is checked in every plugin function; the function then returns early if it's `True`.
+> [!NOTE]
+>
+> `pre-commit install` will setup hooks to ensure your code respects the coding standards. Those hooks will
+> be run each time you commit a file. We aligned our standards with those of `MultiQC`, for more information
+> see [their documentation](https://docs.seqera.io/multiqc/development/modules#code-formatting).
 
-In this way, we can effectively disable the plugin code and allow native MultiQC execution. Note that a similar approach could be used to _enable_ a custom plugin or feature.
+## Usage
+
+Run MultiQC on your neuroimaging pipeline outputs:
+
+```bash
+multiqc /path/to/analysis/directory
+```
+
+The plugin will automatically detect and parse compatible files based on predefined search patterns.
+
+### Configuration
+
+Customize thresholds in your MultiQC config file and select the order of modules:
+
+```yaml
+cortical:
+  iqr_multiplier: 3
+
+tractometry:
+  warn_threshold: 90
+  fail_threshold: 80
+
+coverage:
+  warn_threshold: 0.9
+  fail_threshold: 0.8
+
+framewise_displacement:
+  warn_threshold: 0.8 # mm
+  fail_threshold: 2.0 # mm
+
+streamline_count:
+  iqr_multiplier: 3
+
+module_order:
+  - framewise_displacement
+  - coverage
+  - streamline_count
+  - tractometry
+  - cortical
+  - subcortical
+```
+
+## Example Report
+
+To generate a sample report with test data:
+
+```bash
+multiqc tests/test_data
+```
+
+The resulting HTML report will include interactive plots, status indicators, and general statistics for all detected modules.
+
+## Contribute a new module
+
+Contribution are welcomed! Creating a module in this plugin follows the same instructions as creating a module directly in MultiQC. For detailed instructions, visit the [MultiQC documentation](https://docs.seqera.io/multiqc/development/modules).
+
+## Documentation
+
+For more information on MultiQC plugins, visit the [MultiQC documentation](https://docs.seqera.io/multiqc/development/plugins).

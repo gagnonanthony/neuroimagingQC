@@ -75,6 +75,9 @@ target/
 # pyenv
 .python-version
 
+# Ruff stuff
+.ruff_cache/
+
 # celery beat schedule file
 celerybeat-schedule
 
