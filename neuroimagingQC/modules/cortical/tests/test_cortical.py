@@ -17,9 +17,7 @@ def reset_multiqc():
     report.reset()
     # Register search patterns after reset
     if "cortical/volume" not in config.sp:
-        config.update_dict(
-            config.sp, {"cortical/volume": {"fn": "cortical_*_volume_*.tsv"}}
-        )
+        config.update_dict(config.sp, {"cortical/volume": {"fn": "cortical_*_volume_*.tsv"}})
     yield
     config.reset()
     report.reset()
@@ -218,13 +216,10 @@ def test_ignore_samples(reset_multiqc, test_data_dir):
 
     # Verify that the ignored sample was actually filtered out
     data_dict = module.saved_raw_data["multiqc_cortical_data"]
-    assert "sub-P1356" not in data_dict, "Ignored sample should not be in " + \
-        "output"
+    assert "sub-P1356" not in data_dict, "Ignored sample should not be in output"
 
     # Verify that other samples are still present
-    assert len(data_dict) == 4, (
-        f"Expected 4 samples after filtering, " f"got {len(data_dict)}"
-    )
+    assert len(data_dict) == 4, f"Expected 4 samples after filtering, got {len(data_dict)}"
 
     config.sample_names_ignore = []
 

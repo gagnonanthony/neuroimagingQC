@@ -67,9 +67,7 @@ class MultiqcModule(BaseMultiqcModule):
         log.info(f"Found {len(cortical_data)} samples")
 
         # Calculate outlier percentages for each sample
-        sample_percentages = self._calculate_outlier_percentages(
-            cortical_data
-        )
+        sample_percentages = self._calculate_outlier_percentages(cortical_data)
 
         # Create status bar data
         # Note: Lower outlier percentage is better
@@ -83,22 +81,17 @@ class MultiqcModule(BaseMultiqcModule):
                 status_data["fail"].append(sample_name)
 
         # Add region percentage to general statistics
-        general_stats_data = {
-            s: {"region_pct": pct} for s, pct in sample_percentages.items()
-        }
+        general_stats_data = {s: {"region_pct": pct} for s, pct in sample_percentages.items()}
 
         # Get max value for scale
-        max_outlier_pct = (
-            max(sample_percentages.values()) if sample_percentages else 100
-        )
+        max_outlier_pct = max(sample_percentages.values()) if sample_percentages else 100
 
         self.general_stats_addcols(
             general_stats_data,
             {
                 "region_pct": {
                     "title": "% Outliers",
-                    "description": "Percentage of cortical regions with " +
-                                   "volumes outside 3*IQR range",
+                    "description": "Percentage of cortical regions with volumes outside 3*IQR range",
                     "suffix": "%",
                     "max": max_outlier_pct,
                     "min": 0,
@@ -109,9 +102,7 @@ class MultiqcModule(BaseMultiqcModule):
         )
 
         # Add violin plots for volume distributions
-        self._add_per_region_plots(
-            cortical_data, status_data
-        )
+        self._add_per_region_plots(cortical_data, status_data)
 
         # Write parsed data to file
         self.write_data_file(cortical_data, "multiqc_cortical_data")
@@ -160,9 +151,7 @@ class MultiqcModule(BaseMultiqcModule):
 
         return data
 
-    def _calculate_outlier_percentages(
-        self, cortical_data: Dict
-    ) -> Dict[str, float]:
+    def _calculate_outlier_percentages(self, cortical_data: Dict) -> Dict[str, float]:
         """
         Calculate the percentage of outlier regions per sample.
 
@@ -192,7 +181,7 @@ class MultiqcModule(BaseMultiqcModule):
                 # Use full range if too few samples
                 region_iqr_bounds[region_name] = (
                     float(np.min(values_array)),
-                    float(np.max(values_array))
+                    float(np.max(values_array)),
                 )
                 continue
 
@@ -220,11 +209,7 @@ class MultiqcModule(BaseMultiqcModule):
                         outlier_count += 1
 
             # Calculate percentage of outlier regions
-            percentage = (
-                (outlier_count / total_regions * 100)
-                if total_regions > 0
-                else 0.0
-            )
+            percentage = (outlier_count / total_regions * 100) if total_regions > 0 else 0.0
             sample_percentages[sample_name] = percentage
 
         return sample_percentages
@@ -265,15 +250,11 @@ class MultiqcModule(BaseMultiqcModule):
 
             for region_name in lh_regions.keys():
                 if region_name in cortical_data[sample_name]:
-                    lh_plot_data[sample_name][region_name] = (
-                        cortical_data[sample_name][region_name]
-                    )
+                    lh_plot_data[sample_name][region_name] = cortical_data[sample_name][region_name]
 
             for region_name in rh_regions.keys():
                 if region_name in cortical_data[sample_name]:
-                    rh_plot_data[sample_name][region_name] = (
-                        cortical_data[sample_name][region_name]
-                    )
+                    rh_plot_data[sample_name][region_name] = cortical_data[sample_name][region_name]
 
         # Configuration for each hemisphere section
         regions_config = [
@@ -283,10 +264,9 @@ class MultiqcModule(BaseMultiqcModule):
                 "name": "Left Hemisphere Volume Distribution",
                 "anchor": "cortical_lh_volumes",
                 "id": "cortical_lh_volume_plot",
-                "title": "Cortical Regions: Left Hemisphere Volume " +
-                         "Distribution",
-                "description": "Distribution of cortical region volumes in " +
-                               "the left hemisphere across all samples.",
+                "title": "Cortical Regions: Left Hemisphere Volume Distribution",
+                "description": "Distribution of cortical region volumes in "
+                + "the left hemisphere across all samples.",
             },
             {
                 "plot_data": rh_plot_data,
@@ -294,10 +274,9 @@ class MultiqcModule(BaseMultiqcModule):
                 "name": "Right Hemisphere Volume Distribution",
                 "anchor": "cortical_rh_volumes",
                 "id": "cortical_rh_volume_plot",
-                "title": "Cortical Regions: Right Hemisphere Volume " +
-                         "Distribution",
-                "description": "Distribution of cortical region volumes in " +
-                               "the right hemisphere across all samples.",
+                "title": "Cortical Regions: Right Hemisphere Volume Distribution",
+                "description": "Distribution of cortical region volumes in "
+                + "the right hemisphere across all samples.",
             },
         ]
 

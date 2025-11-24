@@ -41,43 +41,28 @@ def neuroimagingQC_execution_start():
     # Tractometry search pattern: bundles mean stats TSV
     # This tells MultiQC to look for files named `bundles_mean_stats.tsv`
     if "tractometry" not in config.sp:
-        config.update_dict(config.sp, {
-            "tractometry": {"fn": "bundles_mean_stats.tsv"}
-            }
-        )
+        config.update_dict(config.sp, {"tractometry": {"fn": "bundles_mean_stats.tsv"}})
 
     # Cortical regions search pattern: cortical volume TSV files
     # This tells MultiQC to look for files matching the pattern
     if "cortical/volume" not in config.sp:
-        config.update_dict(config.sp, {
-            "cortical/volume": {"fn": "cortical_*_volume_*.tsv"}
-            }
-        )
+        config.update_dict(config.sp, {"cortical/volume": {"fn": "cortical_*_volume_*.tsv"}})
 
     # Subcortical regions search pattern: subcortical volume TSV files
     if "subcortical/volume" not in config.sp:
-        config.update_dict(config.sp, {
-            "subcortical/volume": {"fn": "*_subcortical_volumes.tsv"}
-            }
-        )
+        config.update_dict(config.sp, {"subcortical/volume": {"fn": "*_subcortical_volumes.tsv"}})
 
     # Framewise displacement search pattern: eddy restricted movement RMS files
     if "framewise_displacement" not in config.sp:
-        config.update_dict(config.sp, {
-            "framewise_displacement": {"fn": "*eddy_restricted_movement_rms.txt"}
-            }
+        config.update_dict(
+            config.sp,
+            {"framewise_displacement": {"fn": "*eddy_restricted_movement_rms.txt"}},
         )
 
     # Coverage search pattern: dice coefficient files
     if "coverage" not in config.sp:
-        config.update_dict(config.sp, {
-            "coverage": {"fn": "*dice.txt"}
-            }
-        )
+        config.update_dict(config.sp, {"coverage": {"fn": "*dice.txt"}})
 
     # Streamline count search pattern
     if "streamline_count" not in config.sp:
-        config.update_dict(config.sp, {
-            "streamline_count": {"fn": "*__sc.txt"}
-            }
-        )
+        config.update_dict(config.sp, {"streamline_count": {"fn": "*__sc.txt"}})

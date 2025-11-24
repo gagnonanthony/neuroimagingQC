@@ -17,8 +17,7 @@ def reset_multiqc():
     report.reset()
     # Register search patterns after reset
     if "streamline_count" not in config.sp:
-        config.update_dict(config.sp, {"streamline_count":
-                                       {"fn": "*__sc.txt"}})
+        config.update_dict(config.sp, {"streamline_count": {"fn": "*__sc.txt"}})
     yield
     config.reset()
     report.reset()

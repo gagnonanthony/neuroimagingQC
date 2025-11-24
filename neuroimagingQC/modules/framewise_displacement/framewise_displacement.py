@@ -111,20 +111,14 @@ class MultiqcModule(BaseMultiqcModule):
         if not values:
             return {}
 
-        return {
-            "sample_name": sample_name,
-            "values": values
-        }
+        return {"sample_name": sample_name, "values": values}
 
     def _add_single_subject_plot(self, fd_data: Dict) -> None:
         """
         Add line plot for single subject.
         """
         if len(fd_data) != 1:
-            log.warning(
-                f"Expected 1 sample in single-subject mode, "
-                f"found {len(fd_data)}"
-            )
+            log.warning(f"Expected 1 sample in single-subject mode, found {len(fd_data)}")
 
         # Get the single sample data
         sample_name = list(fd_data.keys())[0]
@@ -135,11 +129,7 @@ class MultiqcModule(BaseMultiqcModule):
         y_max = max(max_value * 1.1, 0.8)  # At least 0.8 for visibility
 
         # Create plot data: {sample: {x: y}}
-        plot_data = {
-            sample_name: {
-                i: value for i, value in enumerate(values)
-            }
-        }
+        plot_data = {sample_name: {i: value for i, value in enumerate(values)}}
 
         # Add colored regions
         plot_config = {
@@ -153,10 +143,18 @@ class MultiqcModule(BaseMultiqcModule):
                 {"from": 2.0, "to": 10, "color": "#FFB6C6"},
             ],
             "y_lines": [
-                {"value": 0.8, "color": "#95a5a6", "dash": "dash",
-                 "label": "Threshold: 0.8 mm"},
-                {"value": 2.0, "color": "#95a5a6", "dash": "dash",
-                 "label": "Threshold: 2.0 mm"}
+                {
+                    "value": 0.8,
+                    "color": "#95a5a6",
+                    "dash": "dash",
+                    "label": "Threshold: 0.8 mm",
+                },
+                {
+                    "value": 2.0,
+                    "color": "#95a5a6",
+                    "dash": "dash",
+                    "label": "Threshold: 2.0 mm",
+                },
             ],
             "colors": {sample_name: "#000000"},
             "ymax": y_max,
@@ -165,8 +163,7 @@ class MultiqcModule(BaseMultiqcModule):
         self.add_section(
             name="Framewise Displacement",
             anchor="fd_single_subject",
-            description="Framewise displacement across volumes. "
-                        "Green: <0.8mm, Yellow: 0.8-2.0mm, Red: >2.0mm",
+            description="Framewise displacement across volumes. Green: <0.8mm, Yellow: 0.8-2.0mm, Red: >2.0mm",
             plot=linegraph.plot(plot_data, plot_config),
         )
 
@@ -202,14 +199,10 @@ class MultiqcModule(BaseMultiqcModule):
                 statuses[sample_name] = "fail"
 
         # Add max FD to general statistics
-        general_stats_data = {
-            s: {"max_fd": max_val} for s, max_val in max_fd_values.items()
-        }
+        general_stats_data = {s: {"max_fd": max_val} for s, max_val in max_fd_values.items()}
 
         # Get max value for scale
-        max_fd_overall = (
-            max(max_fd_values.values()) if max_fd_values else 2.0
-        )
+        max_fd_overall = max(max_fd_values.values()) if max_fd_values else 2.0
 
         self.general_stats_addcols(
             general_stats_data,
@@ -233,9 +226,7 @@ class MultiqcModule(BaseMultiqcModule):
         # Create line plot with all subjects
         plot_data = {}
         for sample_name, values in fd_data.items():
-            plot_data[sample_name] = {
-                i: value for i, value in enumerate(values)
-            }
+            plot_data[sample_name] = {i: value for i, value in enumerate(values)}
 
         # Plot config without bands, with colored lines
         plot_config = {
@@ -245,10 +236,18 @@ class MultiqcModule(BaseMultiqcModule):
             "xlab": "Volume",
             "colors": colors,
             "y_lines": [
-                {"value": warn_threshold, "color": "#000000", "dash": "dash",
-                 "label": f"Threshold: {warn_threshold} mm"},
-                {"value": fail_threshold, "color": "#000000", "dash": "dash",
-                 "label": f"Threshold: {fail_threshold} mm"}
+                {
+                    "value": warn_threshold,
+                    "color": "#000000",
+                    "dash": "dash",
+                    "label": f"Threshold: {warn_threshold} mm",
+                },
+                {
+                    "value": fail_threshold,
+                    "color": "#000000",
+                    "dash": "dash",
+                    "label": f"Threshold: {fail_threshold} mm",
+                },
             ],
             "ymax": y_max,
         }
@@ -262,10 +261,10 @@ class MultiqcModule(BaseMultiqcModule):
             name="Framewise Displacement",
             anchor="fd_multi_subject",
             description=f"Framewise displacement across volumes for all "
-                        f"subjects. Lines are colored based on maximum FD: "
-                        f"Green: <{warn_threshold}mm (pass), "
-                        f"Yellow: {warn_threshold}-{fail_threshold}mm (warn), "
-                        f"Red: >{fail_threshold}mm (fail)",
+            f"subjects. Lines are colored based on maximum FD: "
+            f"Green: <{warn_threshold}mm (pass), "
+            f"Yellow: {warn_threshold}-{fail_threshold}mm (warn), "
+            f"Red: >{fail_threshold}mm (fail)",
             plot=linegraph.plot(plot_data, plot_config),
             statuses=status_groups,
         )

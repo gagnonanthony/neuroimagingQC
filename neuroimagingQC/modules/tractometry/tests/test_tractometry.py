@@ -17,8 +17,7 @@ def reset_multiqc():
     report.reset()
     # Register search patterns after reset
     if "tractometry" not in config.sp:
-        config.update_dict(config.sp, {"tractometry":
-                                       {"fn": "bundles_mean_stats.tsv"}})
+        config.update_dict(config.sp, {"tractometry": {"fn": "bundles_mean_stats.tsv"}})
     yield
     config.reset()
     report.reset()
@@ -30,10 +29,7 @@ def test_data_dir():
     tmpdir = tempfile.mkdtemp()
 
     # Sample tractometry data
-    header = (
-        "sample\tsession\tbundle\tad\tfa\tmd\trd\t" +
-        "avg_length\tstreamlines_count"
-    )
+    header = "sample\tsession\tbundle\tad\tfa\tmd\trd\tavg_length\tstreamlines_count"
     data = f"""{header}
 sub-P1688\t\tAC\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
 sub-P1688\t\tAF_L\t0.00109\t0.4079\t0.00075\t0.00058\t114.139\t105
@@ -69,10 +65,7 @@ def test_parse_single_file(reset_multiqc):
 
     try:
         # Create a test file
-        header = (
-            "sample\tsession\tbundle\tad\tfa\tmd\trd\t"
-            + "avg_length\tstreamlines_count"
-        )
+        header = "sample\tsession\tbundle\tad\tfa\tmd\trd\tavg_length\tstreamlines_count"
         file_content = f"""{header}
 sub-P1688\t\tAC\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
 sub-P1688\t\tAF_L\t0.00109\t0.4079\t0.00075\t0.00058\t114.139\t105
@@ -129,10 +122,7 @@ def test_bundle_percentage_calculation(reset_multiqc):
         # sub-FULL: has all 3 bundles = 100%
         # sub-PARTIAL: has 2 bundles = 66.7%
         # sub-POOR: has 1 bundle = 33.3%
-        header = (
-            "sample\tsession\tbundle\tad\tfa\tmd\trd\t"
-            + "avg_length\tstreamlines_count"
-        )
+        header = "sample\tsession\tbundle\tad\tfa\tmd\trd\tavg_length\tstreamlines_count"
         test_data = f"""{header}
 sub-FULL\t\tAC\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
 sub-FULL\t\tAF_L\t0.00109\t0.4079\t0.00075\t0.00058\t114.139\t105
@@ -186,10 +176,7 @@ def test_status_assignment_pass(reset_multiqc):
 
     try:
         # Sample with all bundles should pass
-        header = (
-            "sample\tsession\tbundle\tad\tfa\tmd\trd\t"
-            + "avg_length\tstreamlines_count"
-        )
+        header = "sample\tsession\tbundle\tad\tfa\tmd\trd\tavg_length\tstreamlines_count"
         test_data = f"""{header}
 sub-PASS\t\tAC\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
 sub-PASS\t\tAF_L\t0.00109\t0.4079\t0.00075\t0.00058\t114.139\t105
@@ -232,10 +219,7 @@ def test_status_assignment_warn(reset_multiqc):
     try:
         # Create data with 9 total bundles
         # sub-WARN will have 8 bundles = 88.89% (should warn)
-        header = (
-            "sample\tsession\tbundle\tad\tfa\tmd\trd\t"
-            + "avg_length\tstreamlines_count"
-        )
+        header = "sample\tsession\tbundle\tad\tfa\tmd\trd\tavg_length\tstreamlines_count"
         test_data = f"""{header}
 sub-WARN\t\tB1\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
 sub-WARN\t\tB2\t0.00109\t0.4079\t0.00075\t0.00058\t114.139\t105
@@ -291,10 +275,7 @@ def test_status_assignment_fail(reset_multiqc):
 
     try:
         # sub-FAIL will have 1 out of 3 bundles = 33.3% (should fail)
-        header = (
-            "sample\tsession\tbundle\tad\tfa\tmd\trd\t"
-            + "avg_length\tstreamlines_count"
-        )
+        header = "sample\tsession\tbundle\tad\tfa\tmd\trd\tavg_length\tstreamlines_count"
         test_data = f"""{header}
 sub-FAIL\t\tAC\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
 sub-FULL\t\tAC\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
@@ -424,10 +405,7 @@ def test_sections_added(reset_multiqc, test_data_dir):
     # Check section names
     section_names = [s.name for s in module.sections]
     # At minimum, FA and streamlines should be present
-    assert (
-        "Fractional Anisotropy (FA)" in section_names
-        or "Streamline Count" in section_names
-    )
+    assert "Fractional Anisotropy (FA)" in section_names or "Streamline Count" in section_names
 
 
 def test_general_stats_added(reset_multiqc, test_data_dir):
@@ -499,10 +477,7 @@ def test_single_sample_handling(reset_multiqc):
 
     try:
         # Create single-sample file
-        header = (
-            "sample\tsession\tbundle\tad\tfa\tmd\trd\t"
-            + "avg_length\tstreamlines_count"
-        )
+        header = "sample\tsession\tbundle\tad\tfa\tmd\trd\tavg_length\tstreamlines_count"
         single_data = f"""{header}
 sub-SINGLE\t\tAC\t0.00127\t0.3245\t0.00093\t0.00076\t65.833\t6
 sub-SINGLE\t\tAF_L\t0.00109\t0.4079\t0.00075\t0.00058\t114.139\t105

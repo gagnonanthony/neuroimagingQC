@@ -17,10 +17,7 @@ def reset_multiqc():
     report.reset()
     # Register search patterns after reset
     if "subcortical/volume" not in config.sp:
-        config.update_dict(
-            config.sp, {"subcortical/volume":
-                        {"fn": "*_subcortical_volumes.tsv"}}
-        )
+        config.update_dict(config.sp, {"subcortical/volume": {"fn": "*_subcortical_volumes.tsv"}})
     yield
     config.reset()
     report.reset()
@@ -147,8 +144,7 @@ sub-sample5\t500.0\t5000.0
         assert sample5_row.data["region_pct"] == 50.0
 
         # Other samples should have 0% outliers
-        for sample in ["sub-sample1", "sub-sample2", "sub-sample3",
-                       "sub-sample4"]:
+        for sample in ["sub-sample1", "sub-sample2", "sub-sample3", "sub-sample4"]:
             sample_row = general_stats[sample][0]
             assert sample_row.data["region_pct"] == 0.0
 
@@ -201,13 +197,10 @@ def test_ignore_samples(reset_multiqc, test_data_dir):
 
     # Verify that the ignored sample was actually filtered out
     data_dict = module.saved_raw_data["multiqc_subcortical_data"]
-    assert "sub-P0933" not in data_dict, "Ignored sample should not be " + \
-        "in output"
+    assert "sub-P0933" not in data_dict, "Ignored sample should not be " + "in output"
 
     # Verify that other samples are still present
-    assert len(data_dict) == 4, (
-        f"Expected 4 samples after filtering, " f"got {len(data_dict)}"
-    )
+    assert len(data_dict) == 4, f"Expected 4 samples after filtering, got {len(data_dict)}"
 
     config.sample_names_ignore = []
 

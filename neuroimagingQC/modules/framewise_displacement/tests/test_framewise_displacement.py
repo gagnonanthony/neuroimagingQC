@@ -19,8 +19,7 @@ def reset_multiqc():
     if "framewise_displacement" not in config.sp:
         config.update_dict(
             config.sp,
-            {"framewise_displacement":
-             {"fn": "*eddy_restricted_movement_rms.txt"}},
+            {"framewise_displacement": {"fn": "*eddy_restricted_movement_rms.txt"}},
         )
     yield
     config.reset()
@@ -55,18 +54,15 @@ def test_data_dir():
 """
 
     # Create files
-    pass_path = os.path.join(tmpdir,
-                             "sub-PASS001_eddy_restricted_movement_rms.txt")
+    pass_path = os.path.join(tmpdir, "sub-PASS001_eddy_restricted_movement_rms.txt")
     with open(pass_path, "w") as f:
         f.write(fd_pass)
 
-    warn_path = os.path.join(tmpdir,
-                             "sub-WARN001_eddy_restricted_movement_rms.txt")
+    warn_path = os.path.join(tmpdir, "sub-WARN001_eddy_restricted_movement_rms.txt")
     with open(warn_path, "w") as f:
         f.write(fd_warn)
 
-    fail_path = os.path.join(tmpdir,
-                             "sub-FAIL001_eddy_restricted_movement_rms.txt")
+    fail_path = os.path.join(tmpdir, "sub-FAIL001_eddy_restricted_movement_rms.txt")
     with open(fail_path, "w") as f:
         f.write(fd_fail)
 
@@ -77,16 +73,14 @@ def test_data_dir():
 
 def test_module_import():
     """Test that the framewise_displacement module can be imported."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     assert hasattr(framewise_displacement, "MultiqcModule")
 
 
 def test_ignore_samples(reset_multiqc, test_data_dir):
     """Test ignore_samples configuration."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": False}
@@ -94,25 +88,19 @@ def test_ignore_samples(reset_multiqc, test_data_dir):
 
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-PASS001",
             "sp_key": "framewise_displacement",
         },
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-WARN001",
             "sp_key": "framewise_displacement",
         },
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-FAIL001",
             "sp_key": "framewise_displacement",
@@ -137,8 +125,7 @@ def test_ignore_samples(reset_multiqc, test_data_dir):
 
 def test_parse_fd_file(reset_multiqc):
     """Test parsing a single FD file."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     # Create a mock file object
     file_content = """0.840188 0.0
@@ -170,17 +157,14 @@ def test_parse_fd_file(reset_multiqc):
 
 def test_status_assignment_pass(reset_multiqc, test_data_dir):
     """Test that PASS status is assigned correctly (max FD < 0.8)."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": False}
 
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-PASS001",
             "sp_key": "framewise_displacement",
@@ -199,17 +183,14 @@ def test_status_assignment_pass(reset_multiqc, test_data_dir):
 
 def test_status_assignment_warn(reset_multiqc, test_data_dir):
     """Test that WARN status is assigned correctly (0.8 <= max FD < 2.0)."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": False}
 
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-WARN001",
             "sp_key": "framewise_displacement",
@@ -228,17 +209,14 @@ def test_status_assignment_warn(reset_multiqc, test_data_dir):
 
 def test_status_assignment_fail(reset_multiqc, test_data_dir):
     """Test that FAIL status is assigned correctly (max FD >= 2.0)."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": False}
 
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-FAIL001",
             "sp_key": "framewise_displacement",
@@ -257,33 +235,26 @@ def test_status_assignment_fail(reset_multiqc, test_data_dir):
 
 def test_data_written_to_general_stats(reset_multiqc, test_data_dir):
     """Test that max FD data is added to general statistics."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": False}
 
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-PASS001",
             "sp_key": "framewise_displacement",
         },
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-WARN001",
             "sp_key": "framewise_displacement",
         },
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-FAIL001",
             "sp_key": "framewise_displacement",
@@ -318,17 +289,14 @@ def test_data_written_to_general_stats(reset_multiqc, test_data_dir):
 
 def test_multi_subject_section_added(reset_multiqc, test_data_dir):
     """Test that section with plot is added in multi-subject mode."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": False}
 
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-PASS001",
             "sp_key": "framewise_displacement",
@@ -351,17 +319,14 @@ def test_multi_subject_section_added(reset_multiqc, test_data_dir):
 
 def test_single_subject_mode(reset_multiqc, test_data_dir):
     """Test that single-subject mode creates appropriate section."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": True}
 
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-PASS001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-PASS001",
             "sp_key": "framewise_displacement",
@@ -381,19 +346,16 @@ def test_single_subject_mode(reset_multiqc, test_data_dir):
     assert hasattr(section, "plot")
 
     # Single-subject mode should NOT have status bar or general stats
-    assert not hasattr(section, "status_bar_html") or \
-        section.status_bar_html == ""
+    assert not hasattr(section, "status_bar_html") or section.status_bar_html == ""
     assert len(report.general_stats_data) == 0
 
 
 def test_configurable_thresholds(reset_multiqc, test_data_dir):
     """Test that custom thresholds can be configured."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     # Set custom thresholds: warn=1.5, fail=2.5
-    config.framewise_displacement = {"warn_threshold": 1.5,
-                                     "fail_threshold": 2.5}
+    config.framewise_displacement = {"warn_threshold": 1.5, "fail_threshold": 2.5}
     config.analysis_dir = [test_data_dir]
     config.kwargs = {"single_subject": False}
 
@@ -401,17 +363,13 @@ def test_configurable_thresholds(reset_multiqc, test_data_dir):
     # sub-FAIL001 has max FD ~3.18, should be fail with threshold 2.5
     report.files["framewise_displacement"] = [
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-WARN001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-WARN001",
             "sp_key": "framewise_displacement",
         },
         {
-            "fn": os.path.join(
-                test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"
-            ),
+            "fn": os.path.join(test_data_dir, "sub-FAIL001_eddy_restricted_movement_rms.txt"),
             "root": test_data_dir,
             "s_name": "sub-FAIL001",
             "sp_key": "framewise_displacement",
@@ -433,14 +391,12 @@ def test_configurable_thresholds(reset_multiqc, test_data_dir):
 
 def test_empty_file_handling(reset_multiqc):
     """Test handling of empty files."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     tmpdir = tempfile.mkdtemp()
 
     try:
-        empty_path = os.path.join(tmpdir,
-                                  "sub-EMPTY_eddy_restricted_movement_rms.txt")
+        empty_path = os.path.join(tmpdir, "sub-EMPTY_eddy_restricted_movement_rms.txt")
         with open(empty_path, "w") as f:
             f.write("")
 
@@ -464,14 +420,12 @@ def test_empty_file_handling(reset_multiqc):
 
 def test_malformed_file_handling(reset_multiqc):
     """Test handling of malformed FD files."""
-    from neuroimagingQC.modules.framewise_displacement import \
-        framewise_displacement
+    from neuroimagingQC.modules.framewise_displacement import framewise_displacement
 
     tmpdir = tempfile.mkdtemp()
 
     try:
-        bad_path = os.path.join(tmpdir,
-                                "sub-BAD_eddy_restricted_movement_rms.txt")
+        bad_path = os.path.join(tmpdir, "sub-BAD_eddy_restricted_movement_rms.txt")
         with open(bad_path, "w") as f:
             f.write("not valid data\nmore invalid stuff\n")
 

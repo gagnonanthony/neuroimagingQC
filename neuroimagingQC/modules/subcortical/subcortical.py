@@ -65,9 +65,7 @@ class MultiqcModule(BaseMultiqcModule):
         log.info(f"Found {len(subcortical_data)} samples")
 
         # Calculate outlier percentages for each sample
-        sample_percentages = self._calculate_outlier_percentages(
-            subcortical_data
-        )
+        sample_percentages = self._calculate_outlier_percentages(subcortical_data)
 
         # Create status bar data
         # Note: Lower outlier percentage is better
@@ -81,22 +79,17 @@ class MultiqcModule(BaseMultiqcModule):
                 status_data["fail"].append(sample_name)
 
         # Add region percentage to general statistics
-        general_stats_data = {
-            s: {"region_pct": pct} for s, pct in sample_percentages.items()
-        }
+        general_stats_data = {s: {"region_pct": pct} for s, pct in sample_percentages.items()}
 
         # Get max value for scale
-        max_outlier_pct = (
-            max(sample_percentages.values()) if sample_percentages else 100
-        )
+        max_outlier_pct = max(sample_percentages.values()) if sample_percentages else 100
 
         self.general_stats_addcols(
             general_stats_data,
             {
                 "region_pct": {
                     "title": "% Outliers",
-                    "description": "Percentage of subcortical regions " +
-                                   "with volumes outside 3*IQR range",
+                    "description": "Percentage of subcortical regions with volumes outside 3*IQR range",
                     "suffix": "%",
                     "max": max_outlier_pct,
                     "min": 0,
@@ -156,9 +149,7 @@ class MultiqcModule(BaseMultiqcModule):
 
         return data
 
-    def _calculate_outlier_percentages(
-        self, subcortical_data: Dict
-    ) -> Dict[str, float]:
+    def _calculate_outlier_percentages(self, subcortical_data: Dict) -> Dict[str, float]:
         """
         Calculate the percentage of outlier regions per sample.
 
@@ -188,7 +179,7 @@ class MultiqcModule(BaseMultiqcModule):
                 # Use full range if too few samples
                 region_iqr_bounds[region_name] = (
                     float(np.min(values_array)),
-                    float(np.max(values_array))
+                    float(np.max(values_array)),
                 )
                 continue
 
@@ -216,11 +207,7 @@ class MultiqcModule(BaseMultiqcModule):
                         outlier_count += 1
 
             # Calculate percentage of outlier regions
-            percentage = (
-                (outlier_count / total_regions * 100)
-                if total_regions > 0
-                else 0.0
-            )
+            percentage = (outlier_count / total_regions * 100) if total_regions > 0 else 0.0
             sample_percentages[sample_name] = percentage
 
         return sample_percentages

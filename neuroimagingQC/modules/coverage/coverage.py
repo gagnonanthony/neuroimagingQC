@@ -94,10 +94,7 @@ class MultiqcModule(BaseMultiqcModule):
         except (ValueError, TypeError, IndexError):
             return {}
 
-        return {
-            "sample_name": sample_name,
-            "dice_value": dice_value
-        }
+        return {"sample_name": sample_name, "dice_value": dice_value}
 
     def _add_coverage_stats(self, dice_data: Dict[str, float]) -> None:
         """
@@ -119,9 +116,7 @@ class MultiqcModule(BaseMultiqcModule):
                 statuses[sample_name] = "pass"
 
         # Add dice coefficient to general statistics
-        general_stats_data = {
-            s: {"dice_coefficient": val} for s, val in dice_data.items()
-        }
+        general_stats_data = {s: {"dice_coefficient": val} for s, val in dice_data.items()}
 
         self.general_stats_addcols(
             general_stats_data,
@@ -189,7 +184,7 @@ Pass: >0.9, Warn: 0.8-0.9, Fail: <0.8"""
                     "id": "coverage_dice_violin",
                     "title": "Coverage: Dice Coefficients",
                     "ylab": "Dice Coefficient",
-                }
+                },
             ),
             statuses=status_groups,
         )

@@ -27,11 +27,11 @@ class MultiqcModule(BaseMultiqcModule):
             name="Tractometry",
             anchor="tractometry",
             href="https://github.com/scilus/nf-pediatric",
-            info="This section contains QC metrics from tractometry analysis" +
-                 ". For QC purposes, they only include fractional anisotropy" +
-                 " (FA), volume, and streamline for the whole bundles. " +
-                 "Additional metrics can be found in the statistics table " +
-                 "exported by the pipeline.",
+            info="This section contains QC metrics from tractometry analysis"
+            + ". For QC purposes, they only include fractional anisotropy"
+            + " (FA), volume, and streamline for the whole bundles. "
+            + "Additional metrics can be found in the statistics table "
+            + "exported by the pipeline.",
         )
 
         # Halt execution if single-subject mode is enabled
@@ -43,9 +43,7 @@ class MultiqcModule(BaseMultiqcModule):
 
         # Nothing found - raise ModuleNoSamplesFound to tell MultiQC
         if len(files) == 0:
-            log.debug(
-                f"Could not find tractometry reports in {config.analysis_dir}"
-            )
+            log.debug(f"Could not find tractometry reports in {config.analysis_dir}")
             raise ModuleNoSamplesFound
 
         # Parse data from TSV files
@@ -93,8 +91,7 @@ class MultiqcModule(BaseMultiqcModule):
         sample_counts = {s: len(b) for s, b in samples_bundles.items()}
         total_bundles = len(bundle_metrics)
         sample_percentages = {
-            s: (count / total_bundles * 100) if total_bundles > 0 else 0
-            for s, count in sample_counts.items()
+            s: (count / total_bundles * 100) if total_bundles > 0 else 0 for s, count in sample_counts.items()
         }
 
         # Create status categories based on bundle percentages
@@ -121,11 +118,7 @@ class MultiqcModule(BaseMultiqcModule):
         }
 
         # Add bundle percentage to general statistics table
-        general_stats_data = {
-            s: {
-                "bundle_percentage": pct
-                } for s, pct in sample_percentages.items()
-        }
+        general_stats_data = {s: {"bundle_percentage": pct} for s, pct in sample_percentages.items()}
 
         self.general_stats_addcols(
             general_stats_data,
@@ -166,31 +159,31 @@ class MultiqcModule(BaseMultiqcModule):
                 "key": "fa",
                 "title": "Fractional Anisotropy (FA)",
                 "xlab": "FA",
-                "description": "Distribution of FA values per bundle. " +
-                        "You should look for extreme outliers, as it " +
-                        "can be indicative of issues in bundle extraction.",
+                "description": "Distribution of FA values per bundle. "
+                + "You should look for extreme outliers, as it "
+                + "can be indicative of issues in bundle extraction.",
             },
             {
                 "key": "volume",
                 "title": "Bundle Volume",
                 "xlab": "Volume (mm³)",
-                "description": "Distribution of volume per bundle. You " +
-                        "should look for extreme outliers, as it can " +
-                        "indicate issues in bundle extraction. " +
-                        "Bundles with very low volume may be incomplete " +
-                        "while bundles with high volume might include " +
-                        "spurious streamlines or non-desirable structures.",
+                "description": "Distribution of volume per bundle. You "
+                + "should look for extreme outliers, as it can "
+                + "indicate issues in bundle extraction. "
+                + "Bundles with very low volume may be incomplete "
+                + "while bundles with high volume might include "
+                + "spurious streamlines or non-desirable structures.",
             },
             {
                 "key": "streamlines_count",
                 "title": "Streamline Count",
                 "xlab": "# Streamlines",
-                "description": "Distribution of streamline counts per bundle" +
-                        ". You should look for extreme outliers, as it can " +
-                        "indicate issues in bundle extraction. Too high " +
-                        "streamline counts may indicate inclusion of " +
-                        "spurious streamlines, while too low counts may " +
-                        "indicate incomplete bundles.",
+                "description": "Distribution of streamline counts per bundle"
+                + ". You should look for extreme outliers, as it can "
+                + "indicate issues in bundle extraction. Too high "
+                + "streamline counts may indicate inclusion of "
+                + "spurious streamlines, while too low counts may "
+                + "indicate incomplete bundles.",
             },
         ]
 
