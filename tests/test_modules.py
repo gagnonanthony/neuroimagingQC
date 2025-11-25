@@ -1,5 +1,5 @@
 """
-Tests for MultiQC-neuroimaging plugin modules.
+Tests for MultiQC_neuroimaging plugin modules.
 
 This file contains tests to verify that all neuroimaging modules
 work correctly and handle edge cases properly.

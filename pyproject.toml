@@ -45,7 +45,7 @@ packages = [
 ]
 
 [project.urls]
-Repository = "https://github.com/nf-neuro/MultiQC-neuroimaging"
+Repository = "https://github.com/nf-neuro/MultiQC_neuroimaging"
 
 [project.optional-dependencies]
 dev = [

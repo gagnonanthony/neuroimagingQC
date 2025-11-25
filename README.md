@@ -2,7 +2,7 @@
 [![Code Lint](https://github.com/nf-neuro/MultiQC_neuroimaging/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/nf-neuro/MultiQC_neuroimaging/actions/workflows/lint.yml)
 [![Plugin tests](https://github.com/nf-neuro/MultiQC_neuroimaging/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/nf-neuro/MultiQC_neuroimaging/actions/workflows/test.yml)
 
-# MultiQC-neuroimaging
+# MultiQC_neuroimaging
 
 A MultiQC plugin for comprehensive quality control of neuroimaging pipelines. This plugin aggregates QC metrics from various neuroimaging analysis outputs into interactive HTML reports.
 
@@ -23,14 +23,14 @@ All modules feature configurable thresholds, status indicators (pass/warn/fail),
 
 ```bash
 pip install multiqc
-pip install git+https://github.com/nf-neuro/MultiQC-neuroimaging.git
+pip install git+https://github.com/nf-neuro/MultiQC_neuroimaging.git
 ```
 
 For development:
 
 ```bash
 pip install multiqc
-git clone https://github.com/nf-neuro/MultiQC-neuroimaging.git
+git clone https://github.com/nf-neuro/MultiQC_neuroimaging.git
 cd neuroimaging
 pip install -e ".[dev]"
 pre-commit install

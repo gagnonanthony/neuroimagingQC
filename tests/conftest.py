@@ -1,5 +1,5 @@
 """
-Pytest configuration for MultiQC-neuroimaging tests.
+Pytest configuration for MultiQC_neuroimaging tests.
 """
 
 import pytest

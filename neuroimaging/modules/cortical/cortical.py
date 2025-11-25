@@ -28,7 +28,7 @@ class MultiqcModule(BaseMultiqcModule):
         super(MultiqcModule, self).__init__(
             name="Cortical Regions",
             anchor="cortical",
-            href="https://github.com/nf-neuro/MultiQC-neuroimaging",
+            href="https://github.com/nf-neuro/MultiQC_neuroimaging",
             info="Quality control for cortical region segmentation",
         )
 

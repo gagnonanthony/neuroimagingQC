@@ -31,7 +31,7 @@ def neuroimaging_execution_start():
         version = importlib_metadata.version("neuroimaging")
     except importlib_metadata.PackageNotFoundError:
         version = "unknown"
-    log.info("Running MultiQC-neuroimaging v{}".format(version))
+    log.info("Running MultiQC_neuroimaging v{}".format(version))
 
     # Add to the main MultiQC config object.
     # User config files have already been loaded at this point
